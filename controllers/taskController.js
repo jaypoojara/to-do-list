@@ -1,5 +1,6 @@
 // controllers/taskController.js
 const {Task} = require('../models');
+const { Op } = require('sequelize');
 
 const createTask = async (req, res) => {
   const { title, description, due_date } = req.body;
@@ -56,19 +57,36 @@ const updateTask = async (req, res) => {
 const getTasks = async (req, res) => {
   const userId = req.userId; // Extracted from JWT token
 
-  // Get pagination parameters from query (default: page = 1, pageSize = 10)
+  // Get pagination and filtering parameters
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
+  const isCompleted = req.query.isCompleted; // Can be 'true', 'false', or 'undefined'
+  const search = req.query.search || ''; // Search term for title or description
 
   // Calculate offset
   const offset = (page - 1) * pageSize;
 
   try {
-    // Fetch paginated tasks and total count
+    // Build the where clause for filtering
+    const whereClause = { userId };
+
+    if (isCompleted !== 'undefined') {
+      whereClause.isCompleted = isCompleted === '1';
+    }
+
+    if (search) {
+      whereClause[Op.or] = [
+        { title: { [Op.like]: `%${search}%` } }, // Case-insensitive search in title
+        { description: { [Op.like]: `%${search}%` } }, // Case-insensitive search in description
+      ];
+    }
+
+    // Fetch filtered and paginated tasks
     const { rows: tasks, count: totalTasks } = await Task.findAndCountAll({
-      where: { userId },
+      where: whereClause,
       limit: pageSize,
       offset,
+      order: [['createdAt', 'DESC']], // Order tasks by creation date
     });
 
     res.status(200).json({
