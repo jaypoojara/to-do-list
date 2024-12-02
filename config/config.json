@@ -1,9 +1,0 @@
-{
-  "development": {
-    "username": "root",
-    "password": "Development@1234",
-    "database": "to_do_list",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
-}
