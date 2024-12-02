@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { createTask, getTasks, updateTask, deleteTask } = require('../controllers/taskController');
+const { createTask, getTasks, updateTask, deleteTask, getTaskCounts } = require('../controllers/taskController');
 const { createTaskValidationRules, updateTaskValidationRules } = require('../middlewares/validateTask');
 const validationHandler = require('../middlewares/validationHandler');
 const authenticateToken = require('../middlewares/authMiddleware');
@@ -9,6 +9,7 @@ const authenticateToken = require('../middlewares/authMiddleware');
 router.post('/', authenticateToken, createTaskValidationRules, validationHandler, createTask);
 router.put('/:id', authenticateToken, updateTaskValidationRules, validationHandler, updateTask);
 router.get('/', authenticateToken, getTasks);
+router.get('/counts', authenticateToken, getTaskCounts);
 router.delete('/:id', authenticateToken, deleteTask); // Delete task
 
 module.exports = router;

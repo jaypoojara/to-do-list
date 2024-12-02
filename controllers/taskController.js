@@ -128,4 +128,37 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getTasks, updateTask, deleteTask };
+const getTaskCounts = async (req, res) => {
+  const userId = req.userId; // Extracted from JWT token
+
+  try {
+    // Count completed tasks
+    const completedCount = await Task.count({
+      where: {
+        userId,
+        isCompleted: true,
+      },
+    });
+
+    // Count incomplete tasks
+    const incompleteCount = await Task.count({
+      where: {
+        userId,
+        isCompleted: false,
+      },
+    });
+
+    res.status(200).json({
+      message: 'Task counts retrieved successfully',
+      counts: {
+        completed: completedCount,
+        incomplete: incompleteCount,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving task counts', error: error.message });
+  }
+};
+
+
+module.exports = { createTask, getTasks, updateTask, deleteTask, getTaskCounts };
