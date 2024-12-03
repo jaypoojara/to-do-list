@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const { createTask, getTasks, updateTask, deleteTask, getTaskCounts } = require('../controllers/taskController');
 const { createTaskValidationRules, updateTaskValidationRules } = require('../middlewares/validateTask');
 const validationHandler = require('../middlewares/validationHandler');
