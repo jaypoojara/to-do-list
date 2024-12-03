@@ -69,8 +69,7 @@ const getTasks = async (req, res) => {
   try {
     // Build the where clause for filtering
     const whereClause = { userId };
-
-    if (isCompleted !== 'undefined') {
+    if (isCompleted !== undefined) {
       whereClause.isCompleted = isCompleted === '1';
     }
 
