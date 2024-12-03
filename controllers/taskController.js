@@ -41,7 +41,7 @@ const updateTask = async (req, res) => {
     // Update the task
     task.title = title ?? task.title;
     task.description = description ?? task.description;
-    task.isCompleted = isCompleted ?? task.isCompleted;
+    task.isCompleted = isCompleted ? isCompleted === '1' : task.isCompleted;
     task.due_date = due_date ?? task.due_date; // Update due_date
     await task.save();
 
