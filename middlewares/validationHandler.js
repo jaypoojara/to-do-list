@@ -1,4 +1,3 @@
-// middleware/validationHandler.js
 const { validationResult } = require('express-validator');
 
 const validationHandler = (req, res, next) => {

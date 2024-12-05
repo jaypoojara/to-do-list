@@ -1,4 +1,3 @@
-// middleware/validateTask.js
 const { body } = require('express-validator');
 
 const createTaskValidationRules = [
@@ -14,7 +13,7 @@ const createTaskValidationRules = [
   body('due_date')
     .optional()
     .isISO8601()
-    .withMessage('Due date must be a valid ISO 8601 date format'),
+    .withMessage('Due date must be a valid date format'),
 ];
 
 const updateTaskValidationRules = [
@@ -33,7 +32,7 @@ const updateTaskValidationRules = [
   body('due_date')
     .optional()
     .isISO8601()
-    .withMessage('Due date must be a valid ISO 8601 date format'),
+    .withMessage('Due date must be a valid date format'),
 ];
 
 module.exports = {

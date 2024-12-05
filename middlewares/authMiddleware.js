@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
@@ -8,8 +9,8 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, 'jaypoojara'); // Use your secret key
-    req.userId = decoded.id; // Attach userId from token to request object
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+    req.userId = decoded.id;
     next();
   } catch (error) {
     res.status(403).json({ message: 'Invalid or expired token' });

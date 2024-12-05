@@ -5,11 +5,10 @@ const { createTaskValidationRules, updateTaskValidationRules } = require('../mid
 const validationHandler = require('../middlewares/validationHandler');
 const authenticateToken = require('../middlewares/authMiddleware');
 
-// POST route to create a task
 router.post('/', authenticateToken, createTaskValidationRules, validationHandler, createTask);
 router.put('/:id', authenticateToken, updateTaskValidationRules, validationHandler, updateTask);
 router.get('/', authenticateToken, getTasks);
 router.get('/counts', authenticateToken, getTaskCounts);
-router.delete('/:id', authenticateToken, deleteTask); // Delete task
+router.delete('/:id', authenticateToken, deleteTask);
 
 module.exports = router;

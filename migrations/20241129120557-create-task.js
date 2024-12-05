@@ -12,8 +12,8 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users', // Name of the referenced table
-          key: 'id',      // Key in the referenced table
+          model: 'Users',
+          key: 'id',
         }
       },
       title: {

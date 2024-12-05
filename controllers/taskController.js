@@ -1,13 +1,11 @@
-// controllers/taskController.js
 const {Task} = require('../models');
 const { Op } = require('sequelize');
 
 const createTask = async (req, res) => {
   const { title, description, due_date } = req.body;
-  const userId = req.userId; // Extracted from JWT token
+  const userId = req.userId;
 
   try {
-    // Create the task
     const newTask = await Task.create({
       userId,
       title,
@@ -26,23 +24,21 @@ const createTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  const { id } = req.params; // Task ID from the URL
+  const { id } = req.params;
   const { title, description, isCompleted, due_date } = req.body;
-  const userId = req.userId; // Extracted from JWT token
+  const userId = req.userId;
 
   try {
-    // Find the task
     const task = await Task.findOne({ where: { id, userId } });
 
     if (!task) {
       return res.status(404).json({ message: 'Task not found or not authorized to update' });
     }
 
-    // Update the task
     task.title = title ?? task.title;
     task.description = description ?? task.description;
     task.isCompleted = isCompleted ? isCompleted === '1' : task.isCompleted;
-    task.due_date = due_date ?? task.due_date; // Update due_date
+    task.due_date = due_date ?? task.due_date;
     await task.save();
 
     res.status(200).json({
@@ -55,19 +51,16 @@ const updateTask = async (req, res) => {
 };
 
 const getTasks = async (req, res) => {
-  const userId = req.userId; // Extracted from JWT token
+  const userId = req.userId;
 
-  // Get pagination and filtering parameters
   const page = parseInt(req.query.page) || 1;
   const pageSize = parseInt(req.query.pageSize) || 10;
-  const isCompleted = req.query.isCompleted; // Can be 'true', 'false', or 'undefined'
-  const search = req.query.search || ''; // Search term for title or description
+  const isCompleted = req.query.isCompleted;
+  const search = req.query.search || '';
 
-  // Calculate offset
   const offset = (page - 1) * pageSize;
 
   try {
-    // Build the where clause for filtering
     const whereClause = { userId };
     if (isCompleted !== undefined) {
       whereClause.isCompleted = isCompleted === '1';
@@ -75,17 +68,16 @@ const getTasks = async (req, res) => {
 
     if (search) {
       whereClause[Op.or] = [
-        { title: { [Op.like]: `%${search}%` } }, // Case-insensitive search in title
-        { description: { [Op.like]: `%${search}%` } }, // Case-insensitive search in description
+        { title: { [Op.like]: `%${search}%` } },
+        { description: { [Op.like]: `%${search}%` } },
       ];
     }
 
-    // Fetch filtered and paginated tasks
     const { rows: tasks, count: totalTasks } = await Task.findAndCountAll({
       where: whereClause,
       limit: pageSize,
       offset,
-      order: [['createdAt', 'DESC']], // Order tasks by creation date
+      order: [['createdAt', 'DESC']],
     });
 
     res.status(200).json({
@@ -103,20 +95,17 @@ const getTasks = async (req, res) => {
   }
 };
 
-// Delete a task
 const deleteTask = async (req, res) => {
-  const { id } = req.params; // Task ID from the URL
-  const userId = req.userId; // Extracted from JWT token
+  const { id } = req.params;
+  const userId = req.userId;
 
   try {
-    // Find the task
     const task = await Task.findOne({ where: { id, userId } });
 
     if (!task) {
       return res.status(404).json({ message: 'Task not found or not authorized to delete' });
     }
 
-    // Delete the task
     await task.destroy();
 
     res.status(200).json({
@@ -128,10 +117,9 @@ const deleteTask = async (req, res) => {
 };
 
 const getTaskCounts = async (req, res) => {
-  const userId = req.userId; // Extracted from JWT token
+  const userId = req.userId;
 
   try {
-    // Count completed tasks
     const completedCount = await Task.count({
       where: {
         userId,
@@ -139,7 +127,6 @@ const getTaskCounts = async (req, res) => {
       },
     });
 
-    // Count incomplete tasks
     const incompleteCount = await Task.count({
       where: {
         userId,
