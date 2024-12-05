@@ -34,21 +34,14 @@ This is a Node.js application using the Express framework. It includes user auth
 
 ## Database Setup
 
-1. Install Sequelize CLI:
-    ```sh
-    yarn add sequelize-cli --dev
-    # or
-    npm install sequelize-cli --save-dev
-    ```
-
-2. Create the database:
+1. Create the database:
     ```sh
     yarn db:create
     # or
     npm run db:create
     ```
 
-3. Run migrations:
+2. Run migrations:
     ```sh
     yarn db:migrate
     # or
