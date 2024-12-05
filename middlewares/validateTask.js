@@ -35,7 +35,31 @@ const updateTaskValidationRules = [
     .withMessage('Due date must be a valid date format'),
 ];
 
+const signupValidationRules = [
+  body('username')
+    .notEmpty()
+    .withMessage('Username is required')
+    .isLength({ max: 255 })
+    .withMessage('Username cannot exceed 255 characters'),
+  body('password')
+    .notEmpty()
+    .withMessage('Password is required')
+    .isLength({ min: 6, max: 50 })
+    .withMessage('Password must be between 6 and 50 characters long'),
+];
+
+const loginValidationRules = [
+  body('username')
+    .notEmpty()
+    .withMessage('Username is required'),
+  body('password')
+    .notEmpty()
+    .withMessage('Password is required'),
+];
+
 module.exports = {
   createTaskValidationRules,
   updateTaskValidationRules,
+  signupValidationRules,
+  loginValidationRules,
 };
