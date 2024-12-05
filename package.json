@@ -6,8 +6,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "db:create": "npx sequelize db:create",
-    "db:migrate": "npx sequelize db:migrate",
+    "db:create": "npx sequelize db:create --config config/sequelize.config.js",
+    "db:migrate": "npx sequelize db:migrate --config config/sequelize.config.js",
     "start:dev": "nodemon ./bin/www",
     "start": "node ./bin/www"
   },
@@ -26,5 +26,8 @@
     "path": "^0.12.7",
     "process": "^0.11.10",
     "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
   }
 }
