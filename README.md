@@ -22,7 +22,7 @@ This is a Node.js application using the Express framework. It includes user auth
     npm install
     ```
 
-3. Create a `.env` file in the root directory and add the following environment variables:
+3. Create a `.env` file in the root directory and add the following environment variables: (Database should be MySQL)
     ```dotenv
     DB_USERNAME=
     DB_PASSWORD=
