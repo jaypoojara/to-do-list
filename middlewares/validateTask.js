@@ -1,6 +1,6 @@
-const { body } = require('express-validator');
+import { body } from 'express-validator';
 
-const createTaskValidationRules = [
+export const createTaskValidationRules = [
   body('title')
     .notEmpty()
     .withMessage('Title is required')
@@ -16,7 +16,7 @@ const createTaskValidationRules = [
     .withMessage('Due date must be a valid date format'),
 ];
 
-const updateTaskValidationRules = [
+export const updateTaskValidationRules = [
   body('title')
     .optional()
     .isLength({ max: 255 })
@@ -35,7 +35,7 @@ const updateTaskValidationRules = [
     .withMessage('Due date must be a valid date format'),
 ];
 
-const signupValidationRules = [
+export const signupValidationRules = [
   body('username')
     .notEmpty()
     .withMessage('Username is required')
@@ -48,7 +48,7 @@ const signupValidationRules = [
     .withMessage('Password must be between 6 and 50 characters long'),
 ];
 
-const loginValidationRules = [
+export const loginValidationRules = [
   body('username')
     .notEmpty()
     .withMessage('Username is required'),
@@ -56,10 +56,3 @@ const loginValidationRules = [
     .notEmpty()
     .withMessage('Password is required'),
 ];
-
-module.exports = {
-  createTaskValidationRules,
-  updateTaskValidationRules,
-  signupValidationRules,
-  loginValidationRules,
-};

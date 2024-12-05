@@ -1,7 +1,9 @@
-const {Task} = require('../models');
-const { Op } = require('sequelize');
+import db from '../models/index.js';
+import { Op } from 'sequelize';
 
-const createTask = async (req, res) => {
+const { Task } = db;
+
+export const createTask = async (req, res) => {
   const { title, description, due_date } = req.body;
   const userId = req.userId;
 
@@ -23,7 +25,7 @@ const createTask = async (req, res) => {
   }
 };
 
-const updateTask = async (req, res) => {
+export const updateTask = async (req, res) => {
   const { id } = req.params;
   const { title, description, isCompleted, due_date } = req.body;
   const userId = req.userId;
@@ -50,7 +52,7 @@ const updateTask = async (req, res) => {
   }
 };
 
-const getTasks = async (req, res) => {
+export const getTasks = async (req, res) => {
   const userId = req.userId;
 
   const page = parseInt(req.query.page) || 1;
@@ -95,7 +97,7 @@ const getTasks = async (req, res) => {
   }
 };
 
-const deleteTask = async (req, res) => {
+export const deleteTask = async (req, res) => {
   const { id } = req.params;
   const userId = req.userId;
 
@@ -116,7 +118,7 @@ const deleteTask = async (req, res) => {
   }
 };
 
-const getTaskCounts = async (req, res) => {
+export const getTaskCounts = async (req, res) => {
   const userId = req.userId;
 
   try {
@@ -145,6 +147,3 @@ const getTaskCounts = async (req, res) => {
     res.status(500).json({ message: 'Error retrieving task counts', error: error.message });
   }
 };
-
-
-module.exports = { createTask, getTasks, updateTask, deleteTask, getTaskCounts };

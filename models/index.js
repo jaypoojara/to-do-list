@@ -1,10 +1,11 @@
-'use strict';
+import fs from 'fs';
+import path from 'path';
+import Sequelize, {DataTypes} from 'sequelize';
+import process from 'process';
+import { fileURLToPath, pathToFileURL } from 'url';
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const process = require('process');
-require('dotenv').config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const basename = path.basename(__filename);
 const db = {};
 let sequelize;
@@ -14,7 +15,7 @@ sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, proc
   dialect: 'mysql',
 });
 
-fs
+const files = fs
   .readdirSync(__dirname)
   .filter(file => {
     return (
@@ -23,11 +24,17 @@ fs
       file.slice(-3) === '.js' &&
       file.indexOf('.test.js') === -1
     );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
   });
+
+await Promise.all(files.map(async file => {
+  const model = await import(`./${file}`);
+  if (!model.default) {
+    return;
+  }
+
+  const namedModel = model.default(sequelize, DataTypes);
+  db[namedModel.name] = namedModel;
+}))
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
@@ -38,4 +45,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export default db;

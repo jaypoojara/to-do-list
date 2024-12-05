@@ -1,10 +1,11 @@
-const express = require('express');
+import express from 'express';
+import { createUser, loginUser } from '../controllers/authController.js';
+import { signupValidationRules, loginValidationRules } from '../middlewares/validateTask.js';
+import validationHandler from '../middlewares/validationHandler.js';
+
 const router = express.Router();
-const {createUser, loginUser} = require('../controllers/authController');
-const { signupValidationRules, loginValidationRules } = require('../middlewares/validateTask');
-const validationHandler = require('../middlewares/validationHandler');
 
 router.post('/signup', signupValidationRules, validationHandler, createUser);
 router.post('/login', loginValidationRules, validationHandler, loginUser);
 
-module.exports = router;
+export default router;
