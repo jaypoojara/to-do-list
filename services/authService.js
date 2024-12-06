@@ -46,5 +46,8 @@ export const loginUser = async (credentials) => {
     expiresIn: '1h',
   });
 
-  return { token };
+  return { token, user: {
+      username: user.username
+    }
+  };
 };
