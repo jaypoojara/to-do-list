@@ -57,7 +57,7 @@ export const updateTask = async (id, userId, updates) => {
   }
 
   Object.assign(task, updates);
-  task.isCompleted = updates.isCompleted === undefined ? task.isCompleted : updates.isCompleted === '0';
+  task.isCompleted = updates.isCompleted === undefined ? task.isCompleted : updates.isCompleted === 0;
   await task.save();
   return task;
 };
