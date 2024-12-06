@@ -1,4 +1,5 @@
 import db from '../models/index.js';
+import { Op } from 'sequelize';
 
 const Task = db.Task;
 
@@ -17,8 +18,8 @@ export const getTasks = async ({ userId, page, pageSize, isCompleted, search }) 
   }
   if (search) {
     whereClause[Op.or] = [
-      { title: { [Op.iLike]: `%${search}%` } },
-      { description: { [Op.iLike]: `%${search}%` } },
+      { title: { [Op.like]: `%${search}%` } },
+      { description: { [Op.like]: `%${search}%` } },
     ];
   }
 
